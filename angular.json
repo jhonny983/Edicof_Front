@@ -3,30 +3,59 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Edicof-Front": {
-      "projectType": "application",
-      "schematics": {},
+    "vuexy": {
       "root": "",
       "sourceRoot": "src",
+      "projectType": "application",
       "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Edicof-Front",
+            "allowedCommonJsDependencies": [
+              "hammerjs",
+              "node-waves",
+              "app/main/ui/icons/feather/feather.component",
+              "@angularclass/hmr",
+              "ngx-quill",
+              "lodash",
+              "uuid",
+              "nouislider",
+              "dragula",
+              "apexcharts",
+              "chart.js",
+              "contra/emitter",
+              "crossvent",
+              "highlight.js",
+              "ng2-flatpickr"
+            ],
+            "aot": true,
+            "outputPath": "dist/vuexy",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
-            "aot": true,
+            "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/assets/images/logo"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              "node_modules/highlight.js/scss/atom-one-dark.scss",
+              "src/assets/fonts/feather/iconfont.css",
+              "src/assets/fonts/font-awesome/css/font-awesome.min.css",
+              "src/assets/fonts/flag-icon-css/css/flag-icon.min.css"
             ],
-            "scripts": []
+            "stylePreprocessorOptions": {
+              "includePaths": ["node_modules", "src/assets/"]
+            },
+            "scripts": ["./node_modules/katex/dist/katex.min.js", "./node_modules/quill/dist/quill.min.js"]
           },
           "configurations": {
             "production": {
@@ -36,23 +65,38 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "baseHref": "/",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
+              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "100kb"
+                }
+              ]
+            },
+            "hmr": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "100kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
                 }
               ]
             }
@@ -61,18 +105,22 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Edicof-Front:build"
+            "browserTarget": "vuexy:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Edicof-Front:build:production"
+              "browserTarget": "vuexy:build:production"
+            },
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "vuexy:build:hmr"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Edicof-Front:build"
+            "browserTarget": "vuexy:build"
           }
         },
         "test": {
@@ -80,45 +128,51 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
+            "styles": ["src/styles.scss"],
+            "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"],
+            "assets": ["src/favicon.ico", "src/assets"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
-        },
+        }
+      }
+    },
+    "vuexy-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Edicof-Front:serve"
+            "devServerTarget": "vuexy:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Edicof-Front:serve:production"
+              "devServerTarget": "vuexy:serve:production"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
     }
   },
-  "defaultProject": "Edicof-Front"
+  "defaultProject": "vuexy",
+  "cli": {
+    "analytics": false
+  }
 }
