@@ -34,15 +34,28 @@ export class AuthenticationService {
    *  Confirms if user is admin
    */
   get isAdmin() {
-    return this.currentUser && this.currentUserSubject.value.role === Role.Admin;
+    return this.currentUser && this.currentUserSubject.value.role === Role.ADMINISTRADOR;
   }
-
   /**
-   *  Confirms if user is client
+   *  Confirms if user is master
    */
-  get isClient() {
-    return this.currentUser && this.currentUserSubject.value.role === Role.Client;
+    get isMaster() {
+      return this.currentUser && this.currentUserSubject.value.role === Role.MASTER;
+    }
+  /**
+   *  Confirms if user is admin
+   */
+  get isOper() {
+    return this.currentUser && this.currentUserSubject.value.role === Role.OPERADOR;
   }
+   /**
+   *  Confirms if user is admin
+   */
+    get isCont() {
+      return this.currentUser && this.currentUserSubject.value.role === Role.CONTRATISTA;
+    }
+  /**
+
 
   /**
    * User login
@@ -50,14 +63,16 @@ export class AuthenticationService {
    * @param email
    * @param password
    * @returns user
-   */
+   *///
   login(email: string, password: string) {
     return this._http
-      .post<any>(`${environment.apiUrl}/users/authenticate`, { email, password })
+      .post<any>(`${environment.apiUrl}/users/singin`, {email, password})//${environment.apiUrl}
       .pipe(
         map(user => {
           // login successful if there's a jwt token in the response
           if (user && user.token) {
+            //console.log(user)
+
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('currentUser', JSON.stringify(user));
 
@@ -68,9 +83,9 @@ export class AuthenticationService {
                   user.role +
                   ' user to Vuexy. Now you can start to explore. Enjoy! 🎉',
                 '👋 Welcome, ' + user.firstName + '!',
-                { toastClass: 'toast ngx-toastr', closeButton: true }
+                { positionClass: 'toast-top-left', toastClass: 'toast ngx-toastr', closeButton: true }
               );
-            }, 2500);
+            }, 1500);
 
             // notify
             this.currentUserSubject.next(user);
@@ -91,4 +106,38 @@ export class AuthenticationService {
     // notify
     this.currentUserSubject.next(null);
   }
+
+  /**
+   * User singup
+   * 
+   * @param id_usuario
+   * @param nombre_1_usuario
+   * @param nombre_2_usuario
+   * @param apellido_1_usuario
+   * @param apellido_2_usuario
+   * @param nit
+   * @param email
+   * @param password
+   */
+  signup(id_usuario: string, nombre_1_usuario: string, nombre_2_usuario:string, apellido_1_usuario:string, apellido_2_usuario:string, nit:string, email:string, password:string){
+    return this._http
+    .post<any>(`${environment.apiUrl}/users/singup`, {id_usuario, nombre_1_usuario, nombre_2_usuario, apellido_1_usuario, apellido_2_usuario, nit, email, password})//${environment.apiUrl}
+  }
+
+  /**
+   * User Send Confirmation Mail
+   * 
+   * @param email
+   */
+  send_mail(email: string) {
+    return this._http
+    .post<any>(`${environment.apiUrl}/users/send`, { email })
+    .pipe(
+      map(data => {
+        return data
+      })
+    );
+}
+
+
 }

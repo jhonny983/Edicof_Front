@@ -1,0 +1,223 @@
+<div class="auth-wrapper auth-v2">
+  <div class="auth-inner row m-0">
+    <!-- Brand logo--><a class="brand-logo" href="javascript:void(0);">
+      <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" height="28" />
+      <h2 class="brand-text text-primary ml-1">{{coreConfig.app.appName}}</h2></a
+    >
+    <!-- /Brand logo-->
+    <!-- Left Text-->
+    <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+      <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
+        <img
+          class="img-fluid"
+          [src]="
+            coreConfig.layout.skin === 'dark'
+              ? 'assets/images/pages/register-v2-dark.svg'
+              : 'assets/images/pages/register-v2.svg'
+          "
+          alt="Register V2"
+        />
+      </div>
+    </div>
+    <!-- /Left Text-->
+    <!-- Register-->
+    <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+      <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+        <h2 class="card-title font-weight-bold mb-1">Estas mas cerca de nosotros 🚀</h2>
+        <p class="card-text mb-2">Disfruta de nuestra nueva plataforma agil y segura!</p>
+        <form class="auth-register-form mt-2" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="register-id" class="form-label">Identificación</label>
+            <input
+              type="text"
+              formControlName="id"
+              class="form-control"
+              placeholder="123456789"
+              aria-describedby="register-id"
+              tabindex="1"
+              autofocus
+              [ngClass]="{ 'is-invalid': submitted && f.id.errors }"
+            />
+            <div *ngIf="submitted && f.id.errors" class="invalid-feedback">
+              <div *ngIf="f.id.errors.required">Este campo es obligatorio</div>
+              <div *ngIf="f.id.errors.pattern">Este campo solo debe contener numeros</div>
+              <div *ngIf="f.id.errors.minlength">Este campo debe contener minimo 7 caracteres</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md">
+                <label for="register-username1" class="form-label">Primer Nombre</label>
+                <input
+                type="text"
+                formControlName="username1"
+                class="form-control"
+                placeholder="Jhon"
+                aria-describedby="register-username1"
+                tabindex="1"
+                autofocus
+                [ngClass]="{ 'is-invalid': submitted && f.username1.errors }"
+                />
+                <div *ngIf="submitted && f.username1.errors" class="invalid-feedback">
+                  <div *ngIf="f.username1.errors.required">Este campo es obligatorio</div>
+                  <div *ngIf="f.username1.errors.pattern">Este campo solo debe contener letras</div>
+                  <div *ngIf="f.username1.errors.minlength">Este campo debe contener minimo 3 caracteres</div>
+                </div>
+              </div>
+              <div class="col-md">
+                <label for="register-username2" class="form-label">Segundo Nombre</label>
+                <input
+                type="text"
+                formControlName="username2"
+                class="form-control"
+                placeholder="Jhon"
+                aria-describedby="register-username2"
+                tabindex="1"
+                autofocus
+                [ngClass]="{ 'is-invalid': submitted && f.username2.errors }"
+                />
+                <div *ngIf="submitted && f.username2.errors" class="invalid-feedback">
+                  <div *ngIf="f.username2.errors.pattern">Este campo solo debe contener letras</div>
+                  <div *ngIf="f.username2.errors.minlength">Este campo debe contener minimo 3 caracteres</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md">
+                <label for="register-userlastname1" class="form-label">Primer Apellido</label>
+                <input
+                type="text"
+                formControlName="userlastname1"
+                class="form-control"
+                placeholder="Jhon"
+                aria-describedby="register-userlastname1"
+                tabindex="1"
+                autofocus
+                [ngClass]="{ 'is-invalid': submitted && f.userlastname1.errors }"
+                />
+                <div *ngIf="submitted && f.userlastname1.errors" class="invalid-feedback">
+                  <div *ngIf="f.userlastname1.errors.required">Este campo es obligatorio</div>
+                  <div *ngIf="f.userlastname1.errors.pattern">Este campo solo debe contener letras</div>
+                  <div *ngIf="f.userlastname1.errors.minlength">Este campo debe contener minimo 3 caracteres</div>
+                </div>
+              </div>
+              <div class="col-md">
+                <label for="register-userlastname2" class="form-label">Segundo Apellido</label>
+                <input
+                type="text"
+                formControlName="userlastname2"
+                class="form-control"
+                placeholder="Jhon"
+                aria-describedby="register-userlastname2"
+                tabindex="1"
+                autofocus
+                [ngClass]="{ 'is-invalid': submitted && f.userlastname2.errors }"
+                />
+                <div *ngIf="submitted && f.userlastname2.errors" class="invalid-feedback">
+                  <div *ngIf="f.userlastname2.errors.pattern">Este campo solo debe contener letras</div>
+                  <div *ngIf="f.userlastname2.errors.minlength">Este campo debe contener minimo 3 caracteres</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="register-nit" class="form-label">NIT Empresa</label>
+            <input
+              type="text"
+              formControlName="nit"
+              class="form-control"
+              placeholder="9001234567"
+              aria-describedby="register-nit"
+              tabindex="2"
+              [ngClass]="{ 'is-invalid': submitted && f.nit.errors }"
+            />
+            <div *ngIf="submitted && f.nit.errors" class="invalid-feedback">
+              <div *ngIf="f.nit.errors.required">Este campo es obligatorio</div>
+              <div *ngIf="f.nit.errors.pattern">Este campo solo debe contener numeros</div>
+              <div *ngIf="f.nit.errors.minlength">Este campo debe contener minimo 7 caracteres</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="register-email" class="form-label">Email</label>
+            <input
+              type="text"
+              formControlName="email"
+              class="form-control"
+              placeholder="john@example.com"
+              aria-describedby="register-email"
+              tabindex="2"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+            />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">Este campo es obligatorio</div>
+              <div *ngIf="f.email.errors.email">Este campo debe ser una direccion de correo electronico valida</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="register-password" class="form-label">Contraseña</label>
+
+            <div class="input-group input-group-merge form-password-toggle">
+              <input
+                [type]="passwordTextType ? 'text' : 'password'"
+                formControlName="password"
+                class="form-control form-control-merge"
+                placeholder="············"
+                aria-describedby="register-password"
+                tabindex="3"
+                [ngClass]="{ 'is-invalid error': submitted && f.password.errors }"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text cursor-pointer"
+                  ><i
+                    class="feather font-small-4"
+                    [ngClass]="{
+                      'icon-eye-off': passwordTextType,
+                      'icon-eye': !passwordTextType
+                    }"
+                    (click)="togglePasswordTextType()"
+                  ></i
+                ></span>
+              </div>
+            </div>
+            <div
+              *ngIf="submitted && f.password.errors"
+              class="invalid-feedback"
+              [ngClass]="{ 'd-block': submitted && f.password.errors }"
+            >
+              <div *ngIf="f.password.errors.required">Este campo es obligatoria</div>
+              <div *ngIf="f.password.errors.pattern">Este campo solo debe contener caracteres</div>
+              <div *ngIf="f.password.errors.minlength">Este campo debe contener minimo 6 caracteres</div>
+            </div>
+          </div>
+          <div class="form-group form-check">
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" 
+              formControlName="politica" 
+              type="checkbox" 
+              id="register-privacy-policy" 
+              tabindex="4" 
+              [ngClass]="{ 'is-invalid': submitted && f.politica.errors }"
+              />
+              <label class="custom-control-label" for="register-privacy-policy">
+                Acepto la <a href="javascript:void(0);">politica de privacidad</a>
+              </label>
+              <div *ngIf="submitted && f.politica.errors" class="invalid-feedback">
+                Debe aceptar la politica de privacidad
+              </div>
+            </div>
+          </div>
+          <button  class="btn btn-primary btn-block" tabindex="5" rippleEffect>Registrarse</button>
+        </form>
+        <p class="text-center mt-2">
+          <span>Ya tienes una cuenta con nosotros?</span
+          ><a routerLink="/pages/authentication/login-v2"><span>&nbsp;Inicia sesion aqui</span></a>
+        </p>
+        
+        
+      </div>
+    </div>
+    <!-- /Register [disabled]="!TDMultiRuleForm.form.valid"-->
+  </div>
+</div>

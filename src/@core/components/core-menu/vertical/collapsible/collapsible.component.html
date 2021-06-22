@@ -25,7 +25,9 @@
       <li
         core-menu-vertical-item
         [item]="item"
-        *ngIf="item.type == 'item'"
+        *ngIf="
+          item.type == 'item' && (item.role ? item.role.includes(currentUser.role) : false || item.role == undefined)
+        "
         [ngClass]="{ disabled: item.disabled === true }"
         [routerLink]="item.openInNewTab ? [] : [item.url]"
         [routerLinkActive]="!item.openInNewTab ? 'active' : ''"

@@ -1,28 +1,26 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators'
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
-import { first } from 'rxjs/operators'
 import { AuthenticationService } from 'app/auth/service';
+import { CoreConfigService } from '@core/services/config.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-auth-login-v2',
-  templateUrl: './auth-login-v2.component.html',
-  styleUrls: ['./auth-login-v2.component.scss'],
+  selector: 'auth-sendmail',
+  templateUrl: './auth-sendmail.component.html',
+  styleUrls: ['./auth-sendmail.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AuthLoginV2Component implements OnInit {
-  //  Public
+export class AuthSendMailComponent implements OnInit {
+  // Public
+  public emailVar;
   public coreConfig: any;
-  public loginForm: FormGroup;
-  public loading = false;
+  public forgotPasswordForm: FormGroup;
   public submitted = false;
-  public returnUrl: string;
-  public error = '';
-  public passwordTextType: boolean;
+  public loading = false;
 
   // Private
   private _unsubscribeAll: Subject<any>;
@@ -31,14 +29,13 @@ export class AuthLoginV2Component implements OnInit {
    * Constructor
    *
    * @param {CoreConfigService} _coreConfigService
+   * @param {FormBuilder} _formBuilder
+   *
    */
-  constructor(
-    private _coreConfigService: CoreConfigService,
+  constructor(private _coreConfigService: CoreConfigService,
     private _formBuilder: FormBuilder,
-    private _route: ActivatedRoute,
     private _router: Router,
-    private _authenticationService: AuthenticationService
-  ) {
+    private _authenticationService: AuthenticationService) {
     this._unsubscribeAll = new Subject();
 
     // Configure the layout
@@ -61,43 +58,42 @@ export class AuthLoginV2Component implements OnInit {
 
   // convenience getter for easy access to form fields
   get f() {
-    return this.loginForm.controls;
+    return this.forgotPasswordForm.controls;
   }
 
   /**
-   * Toggle password
+   * On Submit
    */
-  togglePasswordTextType() {
-    this.passwordTextType = !this.passwordTextType;
-  }
-
   onSubmit() {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.loginForm.invalid) {
+    if (this.forgotPasswordForm.invalid) {
       return;
     }
 
-    // Login
+    //Send mail
     this.loading = true;
     this._authenticationService
-      .login(this.f.email.value, this.f.password.value)
+      .send_mail(this.f.email.value)
       .pipe(first())
-      .subscribe(
-        data => {
-          this._router.navigate([this.returnUrl])
-        },
-        error => {
-          //this.error = error
-          this.loading = false
-        }
-      )
+      .subscribe((data) => {
+        console.log(data)
+        Swal.fire({
+          icon: 'success',
+          title: 'Correo de verificación enviado!',
+          text: data.user.NOMBRE_USUARIO+' '+data.user.APELLIDO_USUARIO +' a tu cuenta de correo hemos enviado un mensaje de confirmacion de identidad, revisalo y continua la verificacion para disfrutar de nuestro portal',
+          customClass: {
+            confirmButton: 'btn btn-success'
+          }
+        });
+        this._router.navigate(['/']);
+      },(error) => {
+        this.loading = false
+      })
+      
 
-    // redirect to home page
-    setTimeout(() => {
-      this._router.navigate(['/']);
-    }, 100);
+
   }
 
   // Lifecycle Hooks
@@ -107,13 +103,9 @@ export class AuthLoginV2Component implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    this.loginForm = this._formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+    this.forgotPasswordForm = this._formBuilder.group({
+      email: ['', [Validators.required, Validators.email]]
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
 
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {

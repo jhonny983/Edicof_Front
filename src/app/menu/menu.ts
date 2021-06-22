@@ -15,6 +15,7 @@ export const menu: CoreMenu[] = [
     translate: 'MENU.SAMPLE',
     type: 'item',
     icon: 'file',
-    url: 'sample'
+    url: 'sample',
+    role: ['ADMINISTRADOR']
   }
 ]

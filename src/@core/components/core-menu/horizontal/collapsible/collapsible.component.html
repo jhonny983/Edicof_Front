@@ -21,7 +21,9 @@
       <!-- item -->
       <li
         core-menu-horizontal-item
-        *ngIf="item.type == 'item'"
+        *ngIf="
+          item.type == 'item' && (item.role ? item.role.includes(currentUser.role) : false || item.role == undefined)
+        "
         [item]="item"
         [ngClass]="{ disabled: item.disabled === true }"
         [routerLink]="item.openInNewTab ? [] : [item.url]"

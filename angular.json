@@ -43,7 +43,9 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/assets/images/logo"
+              "src/assets/images/logo",
+              "src/assets/images/pages",
+              "src/assets/images/portrait/small/"
             ],
             "styles": [
               "src/styles.scss",

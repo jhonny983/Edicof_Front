@@ -9,16 +9,20 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { SampleComponent } from './sample.component';
 import { HomeComponent } from './home.component';
 
+import { AuthGuard } from 'app/auth/helpers'
+import { Role } from 'app/auth/models'
+
 const routes = [
   {
     path: 'sample',
     component: SampleComponent,
-    data: { animation: 'sample' }
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMINISTRADOR] }
   },
   {
     path: 'home',
     component: HomeComponent,
-    data: { animation: 'home' }
+    canActivate: [AuthGuard]
   }
 ];
 
